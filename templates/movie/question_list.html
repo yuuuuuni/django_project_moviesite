@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load movie_filter %}
 {% block content %}
 
 <img src="/static/img/movieteacher3.png" class="img-fluid" alt="영화선생 이미지">
@@ -16,9 +17,15 @@
         {% if question_list %}
         {% for question in question_list %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>
+                <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
+                {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
+            </td>
             <td>
                 <a href="{% url 'movie:detail' question.id %}">{{ question.subject }}</a>
+                {% if question.answer_set.count > 0 %}
+                <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
+                {% endif %}
             </td>
             <td>{{ question.create_date }}</td>
         </tr>
@@ -30,6 +37,44 @@
         {% endif %}
         </tbody>
     </table>
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if question_list.has_previous %} <!-- 이전 페이지가 있다면 -->
+        <li class="page-item">
+            <a class="page-link" href="?page={{ question_list.previous_page_number }}">&laquo;</a> <!-- 이전 페이지 번호로 이동해라 -->
+        </li>
+        {% else %} <!-- 없다면 -->
+        <li class="page-item disabled"> <!-- disabled는 비활성화 시키라는 뜻 -->
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a> <!-- '이전' 링크를 비활성화 시켜라. aria-disabled="true"라는 뜻은 비활성화 라는 뜻 -->
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in question_list.paginator.page_range %} <!-- 페이지 리스트 루프를 돌음 -->
+        {% if page_number >= question_list.number|add:-5 and page_number <= question_list.number|add:5 %}
+            {% if page_number == question_list.number %} <!-- 현재 페이지와 사용자가 클릭한 페이지가 같은지 체크, page_number는 사용자가 클릭한 페이지 넘버. question_list.number는 현재 페이지 넘버임 -->
+            <li class="page-item active" aria-current="page"> <!-- 현재 페이지와 같으므로 넘버 강조표시해라(active) -->
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if question_list.has_next %} <!-- 다음 페이지가 있다면 -->
+        <li class="page-item">
+            <a class="page-link" href="?page={{ question_list.next_page_number }}">&raquo;</a> <!-- 다음 페이지 번호로 이동해라 -->
+        </li>
+        {% else %} <!-- 없다면 -->
+        <li class="page-item disabled"> <!-- disabled는 비활성화 시키라는 뜻 -->
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
     <a href="{% url 'movie:question_create' %}" class="btn btn-primary">질문등록</a>
 </div>
 {% endblock %}

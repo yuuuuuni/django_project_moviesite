@@ -32,12 +32,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth', # 장고의 로그인, 로그아웃을 도와주는 앱
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'movie.apps.MovieConfig', # 로컬 앱 추가
+    'common.apps.CommonConfig', # common 앱 추가
 ]
 
 MIDDLEWARE = [
@@ -78,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'moviesite', # DB명
-        'USER': 'root', # DBMS 접속 아이디 (SQLyog의 사용자이름이랑 일치, 기본값 : root)
-        'PASSWORD': '', # DBMS 접속 비번 (SQLyog의 비밀번호랑 일치, 기본값 : '')
+        'USER': 'sbsst', # DBMS 접속 아이디 (SQLyog의 사용자이름이랑 일치, 기본값 : root)
+        'PASSWORD': 'sbs123414', # DBMS 접속 비번 (SQLyog의 비밀번호랑 일치, 기본값 : '')
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
