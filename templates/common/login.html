@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <div class="row"> <!-- 회원가입 링크 부분 시작-->
+        <div class="col-4">
+            <h4>로그인</h4>
+        </div>
+        <div class="col-8 text-right">
+            <span>아직 회원이 아니라면? <a href="{% url 'common:signup' %}" style="color:red">회원가입 하기</a></span>
+        </div>
+    </div>            <!--  회원가입 링크 부분 끝 -->
+    <form method="post" class="post-form" action="{% url 'common:login' %}">
+        {% csrf_token %}
+        {% include 'form_errors.html' %}
+        <div class="form-group">
+            <label for="username">사용자ID</label>
+            <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">로그인</button>
+    </form>
+</div>
+{% endblock %}
