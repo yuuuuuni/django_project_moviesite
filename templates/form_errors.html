@@ -1,13 +1,13 @@
 {% if form.errors %}
     {% for field in form %}
-        {% for error in field.errors %} <!-- 필드 오류를 출력한다. -->
+        {% for error in field.errors %} <!-- 필드 오류를 출력한다. --> <!-- 입력값이 누락되거나 형식에 맞지 않을때 -->
             <div class="alert alert-danger">
                 <strong>{{ field.label }}</strong>
                 {{ error }}
             </div>
         {% endfor %}
     {% endfor %}
-    {% for error in form.non_field_errors %} <!-- 넌필드 오류를 출력한다. -->
+    {% for error in form.non_field_errors %} <!-- 넌필드 오류를 출력한다. --> <!-- 필드가 아닌 그 외의 오류 ex) 아이디와 비밀번호가 일치하지 않는경우 -->
         <div class="alert alert-danger">
             <strong>{{ error }}</strong>
         </div>
