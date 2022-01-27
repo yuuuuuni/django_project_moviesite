@@ -11,6 +11,7 @@
     </div>            <!--  회원가입 링크 부분 끝 -->
     <form method="post" class="post-form" action="{% url 'common:login' %}">
         {% csrf_token %}
+        <input type="hidden" name="text" value="{{ next }}">  <!-- 로그인 성공 후 이동되는 URL -->
         {% include 'form_errors.html' %}
         <div class="form-group">
             <label for="username">사용자ID</label>

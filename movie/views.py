@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -34,6 +35,7 @@ def detail(request, question_id):
     return render(request, 'movie/question_detail.html', context)
 
 
+@login_required(login_url='common:login')
 def answer_create(request, question_id):  # request에는 사용자가 적은 답변 내용이 넘어옴
     """
     답변 등록
@@ -43,6 +45,7 @@ def answer_create(request, question_id):  # request에는 사용자가 적은 �
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = request.user # author 속성에 로그인 계정 저장
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
@@ -53,6 +56,7 @@ def answer_create(request, question_id):  # request에는 사용자가 적은 �
     return render(request, 'movie/question_detail.html', context)
 
 
+@login_required(login_url='common:login')
 def question_create(request): # 여기서의 request는 사용자가 subject와 content 창에 적은 내용이 넘어온 것
     """
     질문 등록
@@ -61,6 +65,7 @@ def question_create(request): # 여기서의 request는 사용자가 subject와 
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
+            question.author = request.user # author 속성에 로그인 계정 저장. request.user는 현재 로그인한 계정의 User 모델 객체
             question.create_date = timezone.now()
             question.save()
             return redirect('movie:index')
