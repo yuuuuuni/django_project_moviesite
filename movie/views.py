@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -19,7 +20,7 @@ def index(request):
     question_list = Question.objects.order_by('-create_date')
 
     # 페이징처리
-    paginator = Paginator(question_list, 10) # 페이지당 10개씩 보여주기
+    paginator = Paginator(question_list, 5) # 페이지당 5개씩 보여주기
     page_obj = paginator.get_page(page) # (page)에 들어간 숫자에 해당하는 (10개씩 게시물을 보여주는)페이지를 꺼내서 page_obj 객체를 생성해라
 
     context = {'question_list': page_obj} # question_list는 페이징 객체(page_obj)
@@ -35,7 +36,7 @@ def detail(request, question_id):
     return render(request, 'movie/question_detail.html', context)
 
 
-@login_required(login_url='common:login')
+@login_required(login_url='common:login') # 로그인한 경우만 실행이 가능하도록 걸어두기
 def answer_create(request, question_id):  # request에는 사용자가 적은 답변 내용이 넘어옴
     """
     답변 등록
@@ -73,3 +74,27 @@ def question_create(request): # 여기서의 request는 사용자가 subject와 
         form = QuestionForm()
     context = {'form': form}
     return render(request, 'movie/question_form.html', context)
+
+
+@login_required(login_url='common:login')
+def question_modify(request, question_id): # 질문 수정은 수정할 질문의 id가 필요하므로 question_id를 받음
+    """
+    질문 수정
+    """
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user != question.author: # 로그인한 사용자와 질문한 작성자가 다르면
+        messages.error(request, '수정권한이 없습니다.') # 에러 메세지 띄워라
+        return redirect('movie:detail', question_id=question.id)
+
+    if request.method == 'POST': # 값이 POST로 들어오면
+        form = QuestionForm(request.POST, instance=question) # 기존 내용(instance=question) + 수정된 내용(request.POST)의 QuestionForm을 form 변수에 넣어라
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.modify_date = timezone.now() # 수정일시 저장
+            question.save() # question은 그냥 사용자가 수정한 값을 담은 변수일뿐!
+            return redirect('movie:detail', question_id=question.id) # 사용자가 입력한 값(수정한 값)을 담은 그 변수(question)의 번호(id)를 question_id에 지정해라
+    else:
+        form = QuestionForm(instance=question) # get방식이면 기존 내용이 채워져있는 QuestionForm을 form 변수에 대입해라
+    context = {'form': form}
+    return render(request, 'movie/question_form.html', context)
+

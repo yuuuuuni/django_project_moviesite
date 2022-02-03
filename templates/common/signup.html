@@ -6,7 +6,7 @@
             <h4>회원가입</h4>
         </div>
         <div class="col-8 text-right">
-            <span><a href="{% url 'common:login' %}" style="color:red"><b>로그인 하기</b></a></span>
+            <span><a href="{% url 'common:login' %}" style="color:red"><b>로그인</b></a></span>
         </div>
     </div>
     <form method="post" class="post-form" action="{% url 'common:signup' %}">
@@ -28,7 +28,7 @@
             <label for="email">이메일</label>
             <input type="text" class="form-control" name="email" id="email" value="{{ form.email.value|default_if_none:'' }}" placeholder="이메일 형식에 맞도록 기재해주세요.">
         </div>
-        <button type="submit" class="btn btn-primary">가입하기</button>
+        <button type="submit" class="btn btn-outline-warning">가입하기</button>
     </form>
 </div>
 {% endblock %}

@@ -5,9 +5,9 @@
 <img src="/static/img/movieteacher3.png" class="img-fluid" alt="영화선생 이미지">
 
 <div class="container my-3">
-    <table class="table table-striped">
+    <table class="table table-hover">
         <thead>
-        <tr class="text-center table-primary">
+        <tr class="text-center">
             <th>번호</th>
             <th style="width:50%">제목</th>
             <th>작성자</th>
@@ -77,6 +77,6 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-    <a href="{% url 'movie:question_create' %}" class="btn btn-primary">질문등록</a>
+    <a href="{% url 'movie:question_create' %}" class="btn btn-outline-warning">질문등록</a>
 </div>
 {% endblock %}

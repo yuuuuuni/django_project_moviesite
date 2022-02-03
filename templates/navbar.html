@@ -9,11 +9,15 @@
             <li class="nav-item">
                 {% if user.is_authenticated %} <!-- 현재 사용자가 로그인 되어있는지를 판별. 로그인이 되어있다면 -->
                 <b style="color:white">{{ user.username }}님 환영해요!</b><br>
-                <a class="nav-link" href="{% url 'common:logout' %}" style="color:#00FFFF"><b>로그아웃 하기</b></a> <!-- 로그아웃 링크 표시하기 -->
+                <a class="nav-link" href="{% url 'common:logout' %}" style="color:white"><b>로그아웃</b></a> <!-- 로그아웃 링크 표시하기 -->
                 {% else %} <!-- 로그인이 되어있지 않다면 -->
-                <a class="nav-link" href="{% url 'common:login' %}" style="color:#00FFFF"><b>로그인 하기</b></a> <!-- 로그인 링크 표시하기 -->
+                <a class="nav-link" href="{% url 'common:login' %}" style="color:#white"><b>로그인</b></a> <!-- 로그인 링크 표시하기 -->
                 {% endif %}
             </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0 right">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
 </nav>
