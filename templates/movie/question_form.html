@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-    <form method="post" class="post-form my-3">
+    <form method="post" class="post-form my-3"> <!-- action 속성이 없으므로 디폴트 action은 현재 페이지가 됨 -->
         {% csrf_token %}
         <!-- {{ form.as_p }} --> <!-- form이 QuestionForm을 가리키므로 QuestionForm을 가져와라 라는 뜻. QuestionForm을 부르면 Question 모델에 해당하는 subject, content의 html을 자동으로 생성해줌  -->
 

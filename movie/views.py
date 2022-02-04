@@ -41,7 +41,7 @@ def answer_create(request, question_id):  # request에는 사용자가 적은 �
     """
     답변 등록
     """
-    question = get_object_or_404(Question, pk=question_id)
+    question = get_object_or_404(Question, pk=question_id) # question_id를 받아 Question객체들 중 pk값이 question_id인 것이 있으면 가져오고 그렇지 않으면 404 에러를 발생시켜라
     if request.method == 'POST':
         form = AnswerForm(request.POST)
         if form.is_valid():
@@ -83,11 +83,11 @@ def question_modify(request, question_id): # 질문 수정은 수정할 질문�
     """
     question = get_object_or_404(Question, pk=question_id)
     if request.user != question.author: # 로그인한 사용자와 질문한 작성자가 다르면
-        messages.error(request, '수정권한이 없습니다.') # 에러 메세지 띄워라
+        messages.error(request, '수정 권한이 없습니다.') # 에러 메세지 모듈을 발생시켜라
         return redirect('movie:detail', question_id=question.id)
 
     if request.method == 'POST': # 값이 POST로 들어오면
-        form = QuestionForm(request.POST, instance=question) # 기존 내용(instance=question) + 수정된 내용(request.POST)의 QuestionForm을 form 변수에 넣어라
+        form = QuestionForm(request.POST, instance=question) # 기존 내용(instance=question)을 기준으로 보여주지만 수정된 내용(request.POST)이 있으면 그 request.POST의 값으로 덮은 후 QuestionForm을 form 변수에 넣어라
         if form.is_valid():
             question = form.save(commit=False)
             question.modify_date = timezone.now() # 수정일시 저장
@@ -98,3 +98,23 @@ def question_modify(request, question_id): # 질문 수정은 수정할 질문�
     context = {'form': form}
     return render(request, 'movie/question_form.html', context)
 
+
+@login_required(login_url='common:login')
+def question_delete(request, question_id):
+    """
+    질문 삭제
+    """
+    question = get_object_or_404(Question, pk=question_id) # question_id를 받아 Question객체(model에서 정의된)들 중 pk가 question_id인 것이 있으면 가져오고 그렇지 않으면 404 에러를 발생시켜라
+    if request.user != question.author:
+        messages.error(request, '삭제 권한이 없습니다')
+        return redirect('movie:detail', question_id=question.id)
+    question.delete()
+    return redirect('movie:index')
+
+
+@login_required(login_url='common:login')
+def answer_modify(request, answer_id):
+    """
+    답변 수정
+    """
+    

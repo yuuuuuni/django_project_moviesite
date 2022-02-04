@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container my-3">
+    <!-- 사용자 오류 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
     <h2 class="border-bottom py-2">{{ question.subject }}</h2>
     <div class="card my-3">
         <div class="card-body">
@@ -11,9 +20,10 @@
                     <div>{{ question.create_date }}</div>
                 </div>
             </div>
-            {% if request.user == question.author %} <!-- 로그인한 사용자와 작성자가 같으면 -->
+            {% if request.user == question.author %} <!-- 로그인한 사용자와 질문 작성자가 같으면 -->
             <div class="my-3">
-                <a href="{% url 'movie:question_modify' question.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="{% url 'movie:question_modify' question.id %}" class="btn btn-sm btn-outline-warning">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-warning" data-uri="{% url 'movie:question_delete' question.id %}">삭제</a>
             </div>
             {% endif %}
         </div>
@@ -29,6 +39,11 @@
                     <div>{{ answer.create_date }}</div>
                 </div>
             </div>
+            {% if request.user == answer.author %} <!-- 로그인한 사용자와 답변 작성자가 같으면 -->
+            <div class="my-3">
+                <a href="{% url 'movie:answer_modify' answer.id %}" class="btn btn-sm btn-outline-info">수정</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -37,19 +52,32 @@
 
         {% if form.errors %}
         <div class="alert alert-danger" role="alert">
-        {% for field in form %}
+            {% for field in form %}
             {% if field.errors %}
             <strong>{{ field.label }}</strong>
             {{ field.errors }}
             {% endif %}
-        {% endfor %}
+            {% endfor %}
         </div>
         {% endif %}
 
         <div class="form-group">
-            <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content" class="form-control" rows="10"></textarea>
+            <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content"
+                      class="form-control" rows="10"></textarea>
         </div>
-        <input type="submit" value="답변등록" class="btn btn-outline-warning">
+        <input type="submit" value="답변등록" class="btn btn-outline-info">
     </form>
 </div>
+{% endblock %}
+<!-- 삭제 시 삭제하겠냐고 한번 더 확인여부 묻는 자바스크립트 부분 -->
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".delete").on('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = $(this).data('uri');
+        }
+    });
+});
+</script>
 {% endblock %}
