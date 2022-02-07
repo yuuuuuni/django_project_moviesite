@@ -15,15 +15,22 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ question.content }}</div>
             <div class="d-flex justify-content-end">
+                {% if question.modify_date %}   <!-- 질문의 수정일시가 있다면 -->
+                <div class="badge badge-light p-2 text-left mx-3">
+                    <div class="mb-2">수정일시</div>
+                    <div>{{ question.modify_date }}</div>
+                </div>
+                {% endif %}
                 <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">작성일시</div>
                     <div class="mb-2">{{ question.author.username }}</div>
                     <div>{{ question.create_date }}</div>
                 </div>
             </div>
             {% if request.user == question.author %} <!-- 로그인한 사용자와 질문 작성자가 같으면 -->
             <div class="my-3">
-                <a href="{% url 'movie:question_modify' question.id %}" class="btn btn-sm btn-outline-warning">수정</a>
-                <a href="#" class="delete btn btn-sm btn-outline-warning" data-uri="{% url 'movie:question_delete' question.id %}">삭제</a>
+                <a href="{% url 'movie:question_modify' question.id %}" class="btn btn-sm btn-outline-info">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-info" data-uri="{% url 'movie:question_delete' question.id %}">삭제</a>
             </div>
             {% endif %}
         </div>
@@ -34,7 +41,14 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
             <div class="d-flex justify-content-end">
+                {% if answer.modify_date %}   <!-- 답변의 수정일시가 있다면 -->
+                <div class="badge badge-light p-2 text-left mx-3">
+                    <div class="mb-2">수정일시</div>
+                    <div>{{ answer.modify_date }}</div>
+                </div>
+                {% endif %}
                 <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">작성일시</div>
                     <div class="mb-2">{{ question.author.username }}</div>
                     <div>{{ answer.create_date }}</div>
                 </div>
@@ -42,6 +56,7 @@
             {% if request.user == answer.author %} <!-- 로그인한 사용자와 답변 작성자가 같으면 -->
             <div class="my-3">
                 <a href="{% url 'movie:answer_modify' answer.id %}" class="btn btn-sm btn-outline-info">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-info" data-uri="{% url 'movie:answer_delete' answer.id %}">삭제</a>
             </div>
             {% endif %}
         </div>
@@ -65,10 +80,11 @@
             <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content"
                       class="form-control" rows="10"></textarea>
         </div>
-        <input type="submit" value="답변등록" class="btn btn-outline-info">
+        <input type="submit" value="답변등록" class="btn btn-outline-warning">
     </form>
 </div>
 {% endblock %}
+
 <!-- 삭제 시 삭제하겠냐고 한번 더 확인여부 묻는 자바스크립트 부분 -->
 {% block script %}
 <script type='text/javascript'>
