@@ -33,6 +33,30 @@
                 <a href="#" class="delete btn btn-sm btn-outline-info" data-uri="{% url 'movie:question_delete' question.id %}">삭제</a>
             </div>
             {% endif %}
+            <!-- 질문 댓글 Start -->
+            {% if question.comment_set.count > 0 %}
+            <div class="mt-3">
+            {% for comment in question.comment_set.all %} <!-- 등록한 댓글을 출력 -->
+                <div class="comment py-2 text-muted"> <!-- 댓글 각각에 comment 스타일 지정 -->
+                    <span style="white-space: pre-line;">{{ comment.content }}</span>
+                    <span>
+                       - {{ comment.author }}, {{ comment.create_date }}
+                        {% if comment.modify_date %}
+                        (수정:{{ comment.modify_date }})
+                        {% endif %}
+                    </span>
+                    {% if request.user == comment.author %} <!-- 로그인한 사용자와 댓글 글쓴이가 같으면 수정, 삭제 링크가 보이도록 -->
+                    <a href="{% url 'movie:comment_modify_question' comment.id %}" class="small">수정</a>
+                    <a href="#" class="small delete" data-uri="{% url 'movie:comment_delete_question' comment.id  %}">삭제</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+            <div>
+                <a href="{% url 'movie:comment_create_question' question.id %}" class="small"><small>댓글 추가 ..</small></a> <!-- 댓글 추가 링크 -->
+            </div>
+            <!-- 질문 댓글 End -->
         </div>
     </div>
     <h5 class="border-bottom my-3 py-2">{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
