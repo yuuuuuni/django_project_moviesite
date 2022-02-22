@@ -28,6 +28,7 @@
                         {% if question.modify_date %}   <!-- 질문의 수정일시가 있다면 -->
                         <div class="badge badge-light p-2 text-left mx-3">
                             <div class="mb-2">수정일시</div>
+                            <div class="mb-2">{{ question.author.username }}</div>
                             <div>{{ question.modify_date }}</div>
                         </div>
                         {% endif %}
@@ -92,12 +93,13 @@
                         {% if answer.modify_date %}   <!-- 답변의 수정일시가 있다면 -->
                         <div class="badge badge-light p-2 text-left mx-3">
                             <div class="mb-2">수정일시</div>
+                            <div class="mb-2">{{ answer.author.username }}</div>
                             <div>{{ answer.modify_date }}</div>
                         </div>
                         {% endif %}
                         <div class="badge badge-light p-2 text-left">
                             <div class="mb-2">작성일시</div>
-                            <div class="mb-2">{{ question.author.username }}</div>
+                            <div class="mb-2">{{ answer.author.username }}</div>
                             <div>{{ answer.create_date }}</div>
                         </div>
                     </div>
