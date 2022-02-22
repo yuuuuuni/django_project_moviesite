@@ -8,11 +8,17 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 {% if user.is_authenticated %} <!-- 현재 사용자가 로그인 되어있는지를 판별. 로그인이 되어있다면 -->
-                <b style="color:#F8BBD0">{{ user.username }}님 환영해요!</b>
+                <b class="nav-link active" style="color:#F8BBD0">{{ user.username }}님 환영해요!</b>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'common:logout' %}" style="color:#FFE57F"><b>로그아웃</b></a> <!-- 로그아웃 링크 표시하기 -->
+            </li>
+            <li class="nav-item">
                 {% else %} <!-- 로그인이 되어있지 않다면 -->
-                <a class="nav-link" href="{% url 'common:login' %}" style="color:#FFE57F"><b>로그인</b></a> <!-- 로그인 링크 표시하기 -->
-                <a class="nav-link" href="{% url 'common:signup' %}" style="color:#F8BBD0"><b>회원가입</b></a></span>
+                <a class="nav-link active" href="{% url 'common:login' %}" style="color:#FFE57F"><b>로그인</b></a> <!-- 로그인 링크 표시하기 -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'common:signup' %}" style="color:#F8BBD0"><b>회원가입</b></a>
                 {% endif %}
             </li>
         </ul>
