@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 
 from movie.forms import AnswerForm
@@ -22,7 +22,7 @@ def answer_create(request, question_id):  # request에는 사용자가 적은 �
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
-            return redirect('movie:detail', question_id=question.id)
+            return redirect('{}#answer_{}'.format(resolve_url('movie:detail', question_id=question.id), answer.id))
     else:
         form = AnswerForm()
     context = {'question': question, 'form': form}
@@ -40,14 +40,13 @@ def answer_modify(request, answer_id):
         return redirect('movie:detail', question_id=answer.question.id)
 
     if request.method == 'POST':  # 값이 POST로 들어오면
-        form = AnswerForm(request.POST,
-                          instance=answer)  # 기존 내용(instance=answer)을 기준으로 보여주지만 수정된 내용(request.POST)이 있으면 그 request.POST의 값으로 덮은 후 AnswerForm을 form 변수에 넣어라
+        form = AnswerForm(request.POST, instance=answer)  # 기존 내용(instance=answer)을 기준으로 보여주지만 수정된 내용(request.POST)이 있으면 그 request.POST의 값으로 덮은 후 AnswerForm을 form 변수에 넣어라
         if form.is_valid():
             answer = form.save(commit=False)
             answer.modify_date = timezone.now()  # 수정일시 저장
             answer.save()  # answer는 그냥 사용자가 수정한 값을 담은 변수일뿐!
-            return redirect('movie:detail',
-                            question_id=answer.question.id)  # 사용자가 입력한 값(수정한 값)을 담은 그 변수(question)의 번호(id)를 question_id에 지정해라
+            return redirect('{}#answer_{}'.format(resolve_url('movie:detail', question_id=answer.question.id), answer.id))
+            # 사용자가 입력한 값(수정한 값)을 담은 그 변수(question)의 번호(id)를 question_id에 지정해라
     else:
         form = AnswerForm(instance=answer)  # get방식이면 기존 내용이 채워져있는 AnswerForm을 form 변수에 대입해라
     context = {'answer': answer, 'form': form}
