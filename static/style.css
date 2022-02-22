@@ -1,3 +1,24 @@
+/* 폰트 적용 : 카페24 써라운드에어 */
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 폰트 코드 : 강원교육모두체 */
+@font-face {
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+	font-family: 'Cafe24SsurroundAir';
+}
+
+
 .comment {
     border-top:dotted 1px #ddd;
     font-size:0.7em;

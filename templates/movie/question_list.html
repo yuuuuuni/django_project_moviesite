@@ -2,7 +2,9 @@
 {% load movie_filter %}
 {% block content %}
 
-<img src="/static/img/movieteacher3.png" class="img-fluid" alt="영화선생 이미지">
+<div class="img-fluid">
+    <img src="/static/img/movieteacher3.png" alt="영화선생 이미지" style="max-width:100%; height:auto;">
+</div>
 
 <div class="container my-3">
     <table class="table table-hover">
@@ -24,6 +26,7 @@
                 {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
             </td>
             <td>
+                <!-- 추천 td 추가 -->
                 {% if question.voter.all.count > 0 %}
                 <span class="badge badge-warning px-2 py-1">{{ question.voter.all.count }}</span>
                 {% else %}
