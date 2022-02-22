@@ -10,7 +10,7 @@ from movie.models import Question, Answer, Comment
 @login_required(login_url='common:login')
 def comment_create_question(request, question_id):
     """
-    질문댓글 등록
+    질문 댓글 등록
     """
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
@@ -31,7 +31,7 @@ def comment_create_question(request, question_id):
 @login_required(login_url='common:login')
 def comment_modify_question(request, comment_id):
     """
-    질문댓글 수정
+    질문 댓글 수정
     """
     comment = get_object_or_404(Comment, pk=comment_id) # comment_id를 받아 Comment객체(model에서 정의된)들 중 pk가 comment_id인 것이 있으면 가져오고 그렇지 않으면 404 에러를 발생시켜라. 그것을 comment라는 변수에 담음
     if request.user != comment.author:
@@ -53,7 +53,7 @@ def comment_modify_question(request, comment_id):
 @login_required(login_url='common:login')
 def comment_delete_question(request, comment_id):
     """
-    질문댓글 삭제
+    질문 댓글 삭제
     """
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.user != comment.author:
@@ -67,7 +67,7 @@ def comment_delete_question(request, comment_id):
 @login_required(login_url='common:login')
 def comment_create_answer(request, answer_id):
     """
-    답변댓글 등록
+    답변 댓글 등록
     """
     answer = get_object_or_404(Answer, pk=answer_id)
     if request.method == 'POST':
@@ -88,7 +88,7 @@ def comment_create_answer(request, answer_id):
 @login_required(login_url='common:login')
 def comment_modify_answer(request, comment_id):
     """
-    답변댓글 수정
+    답변 댓글 수정
     """
     comment = get_object_or_404(Comment, pk=comment_id) # comment_id를 받아 Comment객체(model에서 정의된)들 중 pk가 comment_id인 것이 있으면 가져오고 그렇지 않으면 404 에러를 발생시켜라. 그것을 comment라는 변수에 담음
     if request.user != comment.author:
@@ -111,7 +111,7 @@ def comment_modify_answer(request, comment_id):
 @login_required(login_url='common:login')
 def comment_delete_answer(request, comment_id):
     """
-    답변댓글 삭제
+    답변 댓글 삭제
     """
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.user != comment.author:
