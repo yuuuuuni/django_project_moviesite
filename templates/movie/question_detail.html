@@ -69,8 +69,7 @@
                     </div>
                     {% endif %}
                     <div>
-                        <a href="{% url 'movie:comment_create_question' question.id %}" class="small"><small>댓글 추가
-                            ..</small></a> <!-- 댓글 추가 링크 -->
+                        <a href="{% url 'movie:comment_create_question' question.id %}" class="small"><small>댓글 추가 ..</small></a> <!-- 댓글 추가 링크 -->
                     </div>
                     <!-- 질문 댓글 End -->
                 </div>
@@ -182,7 +181,5 @@ $(document).ready(function(){
         }
     });
 });
-
-
 </script>
 {% endblock %}
