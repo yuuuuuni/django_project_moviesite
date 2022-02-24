@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'movie.apps.MovieConfig', # 로컬 앱 추가
     'common.apps.CommonConfig', # common 앱 추가
+    'django_extensions',
 ]
+
+GRAPH_MODELS = { 'all_applications': True, 'group_models': True, }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
